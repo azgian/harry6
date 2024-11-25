@@ -54,5 +54,8 @@
 		"date-fns": "^4.1.0",
 		"firebase": "^11.0.1",
 		"web-push": "^3.6.7"
+	},
+	"engines": {
+		"node": "18.x"
 	}
 }
