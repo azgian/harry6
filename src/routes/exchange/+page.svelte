@@ -43,6 +43,10 @@
 	};
 
 	const confirmExchange = () => {
+		if (!requestAmount) {
+			toast.showToast('충전 금액을 입력해주세요.', 'error', 1500, false);
+			return;
+		}
 		toast.showToast('카카오페이로 송금하셨습니까?', 'info', null, true, requestExchange);
 	};
 

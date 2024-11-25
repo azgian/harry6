@@ -9,7 +9,7 @@ import {
 import type { Wallet } from '$lib/types';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { initWallets } from '$lib/fynx';
-import { messageService } from './message/service';
+import { messageService } from '$lib/message/service';
 
 export type TransactionStatus = 
   | 'requested'   // 요청됨 (신청)
@@ -166,8 +166,10 @@ auth.onAuthStateChanged((userData) => {
             adminUnsubscribe();
         }
         
-        // 메시지 서비스 구독 정리
+      // 메시지 서비스 구독 정리
+      if (messageService?.stopSubscriptions) {
         messageService.stopSubscriptions();
+      }
         
         user.set(null);
         admins.set([]); // admin 목록 초기화

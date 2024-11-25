@@ -39,9 +39,21 @@
 			{/if}
 		</div>
 	</div>
+	{#if showButtons}
+		<div class="overlay"></div>
+	{/if}
 {/if}
 
 <style>
+	.overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.3);
+		z-index: 1010;
+	}
 	.toast-container {
 		position: fixed;
 		bottom: 150px;
@@ -49,7 +61,7 @@
 		right: 0;
 		display: flex;
 		justify-content: center;
-		z-index: 1000;
+		z-index: 1020;
 	}
 	.toast {
 		background-color: rgba(100, 100, 100, 0.9);
