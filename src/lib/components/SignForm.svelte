@@ -32,8 +32,14 @@
 			goto('/market');
 		} catch (error: any) {
 			console.error('로그인 에러:', error);
-			const message = '로그인 정보가 올바르지 않습니다.<br />회원이 아니시라면 회원가입하세요.';
-			toast.showToast(message, 'error', 3000, false);
+			let message = '';
+			if (error.code === 'auth/invalid-credential') {
+				message = '로그인 정보가 올바르지 않습니다.<br />회원이 아니시라면 회원가입하세요.';
+			} else {
+				message =
+					'이메일에서 인증링크를 확인하세요.<br />수신메일이 없다면<br />스펨메일함도 확인해주세요.';
+			}
+			toast.showToast(message, 'error', 5000, false);
 		}
 	};
 
@@ -50,7 +56,7 @@
 		try {
 			await signUp(email, password);
 			toast.showToast(
-				'회원가입이 완료되었습니다.<br>이메일로 보낸 인증 링크를 확인한 후 로그인해주세요.',
+				'회원가입이 완료되었습니다.<br />이메일로 보낸 인증 링크를 확인한 후<br />로그인해주세요.',
 				'success',
 				4500,
 				false
@@ -58,7 +64,7 @@
 			isSignUp = false;
 		} catch (error: any) {
 			console.error('회원가입 에러:', error);
-			let message = '회원가입에 실패했습니다.';
+			let message = error.message || '회원가입에 실패했습니다.';
 			if (error.code === 'auth/email-already-in-use') {
 				message = '이미 사용 중인 이메일입니다.';
 			} else if (error.code === 'auth/weak-password') {
