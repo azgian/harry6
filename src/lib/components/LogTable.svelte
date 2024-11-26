@@ -481,7 +481,9 @@
 										<img src={`/images/coin/${log.coinId}.png`} class="h-6 w-6" alt={log.coinId} />
 										<span class="text-lg font-bold">{log.reqAmount.toLocaleString('ko-KR')}</span>
 									{:else}
-										{trade.key.toUpperCase()}
+										{trade.key === 'walletAddress'
+											? trade.key.toUpperCase().slice(-7)
+											: trade.key.toUpperCase()}
 									{/if}
 								</div>
 								<div

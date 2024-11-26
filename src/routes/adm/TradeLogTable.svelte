@@ -291,8 +291,8 @@
 		},
 		{
 			key: 'walletAddress',
-			type: 'html',
-			format: (value) => '<span>' + value + '</span>'
+			type: 'text',
+			format: (value) => value
 		},
 		{
 			key: 'txid',
