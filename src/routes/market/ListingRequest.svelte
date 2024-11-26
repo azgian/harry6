@@ -74,7 +74,9 @@
 			{ name: '수량', value: reqAmount }
 		];
 		if (!alertEmptyValue(inputValuesRequired)) return;
-		toast.showToast('거래를 신청하시겠습니까?', 'primary', null, true, requestTrade);
+		const toastMessage =
+			'이 서비스는<br />위법적 목적으로<br />제공되지 않습니다.<br /><br />거래를 신청하시겠습니까?';
+		toast.showToast(toastMessage, 'primary', null, true, requestTrade);
 	};
 
 	const requestTrade = async () => {
