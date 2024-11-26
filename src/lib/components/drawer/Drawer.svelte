@@ -68,7 +68,7 @@
 		top: 0px;
 		right: 0px;
 		background-color: rgba(0, 0, 0, 0.3);
-		border-radius: 0 10px 0 10px;
+		border-radius: 0 0 0 10px;
 	}
 	.close-button span {
 		font-size: 3.5rem;
