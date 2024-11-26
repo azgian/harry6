@@ -156,7 +156,7 @@
 			<div class="kakaopay-container" transition:scale={{ duration: 300, easing: cubicOut }}>
 				<!-- {#if $deviceTypeStore === 'desktop'} -->
 				<div class="kakaopay-content">
-					<img src="/images/bankAccount2.jpg" alt="bankAccount" />
+					<img src="/images/bankAccount2.jpg" alt="bankAccount" class="rounded-lg" />
 				</div>
 				<!-- {:else}
 					<a href="https://qr.kakaopay.com/Ej7qWmp84" target="_blank" class="kakaopay-link">
@@ -237,16 +237,6 @@
 		align-items: center;
 		justify-content: center;
 	}
-
-	.kakao-pay-button span {
-		font-size: 0.85rem;
-		background-color: rgba(0, 0, 0, 0.3);
-		padding: 5px 15px;
-		border-radius: 15px;
-		margin-top: 5px;
-		text-align: center;
-	}
-
 	.kakaopay-container {
 		display: flex;
 		flex-direction: column;
@@ -256,49 +246,18 @@
 	}
 
 	.kakaopay-content {
-		background-color: #fff;
+		/* background-color: #fff; */
 		padding: 5px;
 		border-radius: 15px;
 		width: 250px;
 		max-width: 100%;
 	}
-
 	.kakaopay-content img {
 		width: 100%;
 		height: auto;
 	}
-
 	.amount-selection {
 		margin-top: 20px;
-	}
-
-	.amount-buttons {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-		justify-content: center;
-		margin: 0 auto 20px;
-		max-width: 400px;
-		width: 100%;
-	}
-
-	.amount-button {
-		background-color: transparent;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		width: calc(50% - 5px);
-		max-width: 150px;
-		height: auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.amount-button img {
-		width: 100%;
-		height: auto;
-		object-fit: contain;
 	}
 	.input-wrapper {
 		display: flex;
