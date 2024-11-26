@@ -485,6 +485,11 @@
 											? trade.key.toUpperCase().slice(-7)
 											: trade.key.toUpperCase()}
 									{/if}
+									{#if trade.key === 'walletAddress'}
+										<span class="rounded-md bg-gray-300 px-1 text-xs text-gray-800 opacity-50"
+											>{log.network}</span
+										>
+									{/if}
 								</div>
 								<div
 									class="trade-content {typeof trade.className === 'function'
