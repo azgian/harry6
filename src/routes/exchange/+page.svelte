@@ -156,7 +156,7 @@
 			<div class="kakaopay-container" transition:scale={{ duration: 300, easing: cubicOut }}>
 				<!-- {#if $deviceTypeStore === 'desktop'} -->
 				<div class="kakaopay-content">
-					<img src="/images/bankAccount.jpg" alt="bankAccount" />
+					<img src="/images/bankAccount2.jpg" alt="bankAccount" />
 				</div>
 				<!-- {:else}
 					<a href="https://qr.kakaopay.com/Ej7qWmp84" target="_blank" class="kakaopay-link">

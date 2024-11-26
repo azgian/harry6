@@ -178,7 +178,8 @@
 		{ key: 'createdAt', type: 'date' },
 		{
 			key: 'userId',
-			type: 'user',
+			type: 'text',
+			className: 'bg-black text-white px-2 rounded-md opacity-50',
 			format: async (userId: string) => {
 				const user = await getUser(userId);
 				return user?.displayName || user?.email || 'no name';
