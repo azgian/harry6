@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { toast } from '$lib/toast';
+	import { toast } from './';
 
 	let {
 		message = '',
@@ -71,6 +71,7 @@
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		max-width: 320px;
 		width: 100%;
+		word-break: break-all;
 	}
 	.toast.primary {
 		background-color: var(--primary-color);

@@ -7,17 +7,9 @@
 	import { user } from '$lib/auth';
 	import { userWalletsStore } from '$lib/stores/userStore';
 	import { db } from '$lib/firebase';
-	import {
-		doc,
-		getDoc,
-		updateDoc,
-		arrayUnion,
-		Timestamp,
-		addDoc,
-		collection
-	} from 'firebase/firestore';
-	import { toast } from '$lib/toast';
-	import type { Listing, OrderType } from '$lib/types/trade';
+	import { Timestamp, addDoc, collection } from 'firebase/firestore';
+	import { toast } from '$lib/components/toast';
+	import type { OrderType } from '$lib/types/trade';
 
 	type Props = {
 		orderType: OrderType;

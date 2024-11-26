@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import Button from '$lib/components/Button.svelte';
 	import { getAuth, signOut } from 'firebase/auth';
 	import { user } from '$lib/auth';

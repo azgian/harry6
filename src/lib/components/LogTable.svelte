@@ -15,18 +15,16 @@
 		type OrderByDirection
 	} from 'firebase/firestore';
 	import { formatDate } from '$lib';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
+	import type { ToastType } from '$lib/components/toast';
 	import { slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import MessageBadge from '$lib/components/MessageBadge.svelte';
 	import LoaderBox from '$lib/components/LoaderBox.svelte';
 	import Loader from '$lib/components/loader/Loader.svelte';
-	import type { ToastType } from '$lib/toast';
 	import Paging from '$lib/components/Paging.svelte';
 	import type { OrderType } from '$lib/types/trade';
 	import { scrollToElement } from '$lib';
-	import { goto } from '$app/navigation';
-	import { user, getUser } from '$lib/auth';
+	import { user } from '$lib/auth';
 
 	type Action = {
 		label?: string; // 버튼 텍스트
@@ -64,6 +62,8 @@
 		format?: (value: any, item?: any) => string | FormatElement | Promise<string | FormatElement>;
 	};
 
+	type TooltipText = (item: any) => string;
+
 	type Props = {
 		collectionName: string; // Firestore 컬렉션명
 		queryOptions?: {
@@ -94,6 +94,7 @@
 		onActionEnd?: (buttonKey: string) => void; // 액션 종료 시 호출
 		onItemClick?: (item: any) => void; // 아이템 클릭 핸들러 추가
 		useItemClick?: boolean; // 아이템 클릭 기능 사용 여부
+		tooltipText?: TooltipText; // 툴팁 텍스트
 	};
 
 	let {
@@ -117,7 +118,8 @@
 		onActionStart,
 		onActionEnd,
 		onItemClick,
-		useItemClick = false
+		useItemClick = false,
+		tooltipText = () => ''
 	}: Props = $props();
 
 	let logs = $state<Record<string, any>[]>([]);
@@ -613,6 +615,9 @@
 									</button>
 								{/if}
 							{/each}
+							{#if typeof tooltipText === 'function' && tooltipText(log)}
+								<div class="tool-tip">{tooltipText(log)}</div>
+							{/if}
 						</div>
 					{/if}
 				</div>
@@ -627,9 +632,6 @@
 <style>
 	.hide {
 		display: none;
-	}
-	.log-container {
-		/* margin-bottom: 20px; */
 	}
 	.log-header {
 		background-color: rgba(0, 0, 0, 0.2);
@@ -825,12 +827,56 @@
 		justify-content: end;
 		align-items: center;
 		gap: 15px;
+		overflow: visible;
 		/* background-color: rgba(255, 255, 255, 0.1); */
 	}
+	@keyframes float {
+		0% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-3px);
+		}
+		100% {
+			transform: translateY(0px);
+		}
+	}
+	.tool-tip {
+		position: absolute;
+		top: 35px;
+		right: 0;
+		background-color: rgba(0, 0, 0, 1);
+		border-radius: 5px;
+		padding: 5px;
+		z-index: 100;
+		font-size: 0.8rem;
+		border: 1px solid rgba(255, 255, 255, 0.5);
+		animation: float 3s ease-in-out infinite;
+		white-space: nowrap;
+	}
+	.tool-tip::before {
+		content: '';
+		position: absolute;
+		top: -7px;
+		right: 10px;
+		width: 0;
+		height: 0;
+		border-left: 7px solid transparent;
+		border-right: 7px solid transparent;
+		border-bottom: 7px solid rgba(255, 255, 255, 0.5);
+	}
+	.tool-tip::after {
+		content: '';
+		position: absolute;
+		top: -6px;
+		right: 11px;
+		width: 0;
+		height: 0;
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-bottom: 6px solid rgba(0, 0, 0, 1); /* 배경 색상 */
+	}
 	.btn-config {
-		/* position: absolute;
-		top: 55px;
-		right: 5px; */
 		width: 25px;
 		height: 25px;
 		padding: 0;

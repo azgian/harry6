@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import Button from './Button.svelte';
 	import ToggleSwitch from './ToggleSwitch.svelte';
 	import { page } from '$app/stores';

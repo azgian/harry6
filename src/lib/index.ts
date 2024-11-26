@@ -1,4 +1,4 @@
-import { toast } from '$lib/toast';
+import { toast } from '$lib/components/toast';
 import type { Timestamp } from 'firebase/firestore';
 
 export const swipe = (node: HTMLElement, { threshold = 50, timeout = 300 }) =>

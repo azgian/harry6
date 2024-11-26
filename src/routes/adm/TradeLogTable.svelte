@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LogTable from '$lib/components/LogTable.svelte';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import { sendMessage } from '$lib/message';
 	import { sendPush } from '$lib/push';
 	import { getUser } from '$lib/auth';

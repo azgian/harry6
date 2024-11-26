@@ -3,7 +3,7 @@
 	import { getUser } from '$lib/auth';
 	import { doc, runTransaction, Timestamp } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import { sendMessage } from '$lib/message';
 	import { sendPush } from '$lib/push';
 	import type { TransactionStatus } from '$lib/auth';

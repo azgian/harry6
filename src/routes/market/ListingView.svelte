@@ -5,7 +5,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import ListingRequest from './ListingRequest.svelte';
 	import { user } from '$lib/auth';
 	import { formatDate } from '$lib';

@@ -6,14 +6,15 @@
 	import { page } from '$app/stores';
 	import { deviceTypeStore } from '$lib/stores';
 	import { getDeviceType } from '$lib';
-	import Toast from '$lib/components/Toast.svelte';
-	import { toast } from '$lib/toast';
+	import Toast from '$lib/components/toast/Toast.svelte';
+	import { toast } from '$lib/components/toast';
 	import { user } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import type { LayoutData } from './+layout';
 	import { refreshCoinPriceLiveStore, resetDataInitialization } from '$lib/coinData';
-	import { pushService } from '$lib/push';
 	import ChartPrice from '$lib/components/ChartPrice.svelte';
+	import Drawer from '$lib/components/drawer/Drawer.svelte';
+	import { drawer } from '$lib/components/drawer';
 	import { initializeCounters } from '$lib/message/service';
 	import { setContext } from 'svelte';
 	import { counters } from '$lib/message/stores';
@@ -99,6 +100,8 @@
 		</footer>
 	{/if}
 </div>
+
+<Drawer componentName={$drawer.componentName} isOpen={$drawer.isOpen} position={$drawer.position} />
 
 <Toast
 	message={$toast.message}

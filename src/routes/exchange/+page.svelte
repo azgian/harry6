@@ -2,9 +2,8 @@
 	import { scale, slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import Button from '$lib/components/Button.svelte';
-	import { deviceTypeStore } from '$lib/stores';
 	import LoaderBox from '$lib/components/LoaderBox.svelte';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import { setCommaInput } from '$lib';
 	import { user } from '$lib/auth';
 	import { db } from '$lib/firebase';
@@ -20,19 +19,6 @@
 	let errorMessage = $state('');
 	let isLoading = $state(false);
 	let disabled = $state(false);
-
-	// 상수
-	// const amountButtons = [
-	// 	{ amount: 10000, image: '/images/btn_char_1.png', label: '1만' },
-	// 	{ amount: 100000, image: '/images/btn_char_10.png', label: '10만' },
-	// 	{ amount: 500000, image: '/images/btn_char_50.png', label: '50만' },
-	// 	{ amount: 1000000, image: '/images/btn_char_100.png', label: '100만' }
-	// ];
-
-	// 이벤트 핸들러
-	const handleAmountClick = (value: number) => {
-		requestAmount += value;
-	};
 
 	const handleReset = () => {
 		requestAmount = initAmount;
@@ -97,14 +83,6 @@
 			// 4. 모든 작업을 한번에 실행
 			await batch.commit();
 
-			// 5. 알림 전송
-			await sendMessage(
-				$user.uid,
-				'충전신청 알림',
-				`${requestAmount.toLocaleString('ko-KR')}원 충전이 신청되었습니다.`,
-				'deposit'
-			);
-
 			toast.showToast(
 				'충전신청이 되었습니다.<br />오피스에서 전체 내역을 확인하세요.',
 				'success',
@@ -149,27 +127,13 @@
 				icon="phone"
 				style="font-weight: 600; background-color: #ffe812; width: 250px; color: #3A1D1D;"
 			/>
-			<!-- <span>송금 1회 200만원, 하루 최대 1000만원</span> -->
 		</div>
 
 		{#if showPay}
 			<div class="kakaopay-container" transition:scale={{ duration: 300, easing: cubicOut }}>
-				<!-- {#if $deviceTypeStore === 'desktop'} -->
 				<div class="kakaopay-content">
 					<img src="/images/bankAccount2.jpg" alt="bankAccount" class="rounded-lg" />
 				</div>
-				<!-- {:else}
-					<a href="https://qr.kakaopay.com/Ej7qWmp84" target="_blank" class="kakaopay-link">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208 191.94" class="kakao-icon">
-							<path
-								d="M104 0C46.56 0 0 36.71 0 82c0 29.28 19.47 55 48.75 69.48-1.59 5.49-10.24 35.34-10.58 37.69 0 0-.21 1.76.93 2.43a3.14 3.14 0 0 0 2.48.15c3.28-.46 38-24.81 44-29A131.56 131.56 0 0 0 104 164c57.44 0 104-36.71 104-82S161.44 0 104 0z"
-								fill="#3A1D1D"
-								fill-rule="evenodd"
-							/>
-						</svg>
-						https://qr.kakaopay.com/Ej7qWmp84
-					</a>
-				{/if} -->
 			</div>
 		{/if}
 
@@ -201,17 +165,6 @@
 		</div>
 
 		<div class="amount-selection">
-			<!-- <div class="amount-buttons">
-				{#each amountButtons as button}
-					<button
-						type="button"
-						class="amount-button"
-						onclick={() => handleAmountClick(button.amount)}
-					>
-						<img src={button.image} alt={button.label} />
-					</button>
-				{/each}
-			</div> -->
 			<div class="reset-button">
 				<Button onClick={handleReset} text="금액 초기화" className="outline" />
 			</div>

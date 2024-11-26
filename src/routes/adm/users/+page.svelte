@@ -17,8 +17,9 @@
 		},
 		{
 			key: 'displayName',
-			type: 'user',
-			format: (value) => value || '이름 없음'
+			type: 'text',
+			className: 'bg-black text-white px-2 rounded-md opacity-50',
+			format: (value) => value || 'no name'
 		}
 	]}
 	columns={[

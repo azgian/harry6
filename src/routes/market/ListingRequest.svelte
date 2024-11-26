@@ -7,18 +7,15 @@
 	import { goto } from '$app/navigation';
 	import { scale } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import { toast } from '$lib/toast';
-	import { setCash } from '$lib/cash';
+	import { toast } from '$lib/components/toast';
 	import { userWalletsStore } from '$lib/stores/userStore';
 	import { user } from '$lib/auth';
 	import { networkFeeList } from '$lib/fynx';
 	import type { Listing, TradeLog } from '$lib/types/trade';
-	import { TradeService } from '$lib/services/tradeService';
 	import { db } from '$lib/firebase';
 	import { doc, writeBatch, increment, Timestamp, collection } from 'firebase/firestore';
 	import type { TransactionStatus } from '$lib/auth';
-
-	const tradeService = new TradeService();
+	import { drawer } from '$lib/components/drawer';
 
 	type Props = {
 		listing: Listing | null;
@@ -29,19 +26,10 @@
 	let orderType = $state(listing?.orderType);
 	let requestOrderType = $state<'sell' | 'buy'>(orderType === 'sell' ? 'buy' : 'sell');
 
-	const initWallet = $userWalletsStore.find((w) => w.network === 'BEP20');
+	let walletAddress = $state('');
+	let network = $state('');
+	let networkFee = $state(0);
 
-	let walletAddress = $state(
-		requestOrderType === 'buy' ? initWallet?.address || '' : listing?.walletAddress || ''
-	);
-	let selectedNetwork = $state(
-		requestOrderType === 'buy' ? initWallet?.network || '' : listing?.network || ''
-	);
-	let networkFee = $state<number | null>(
-		requestOrderType === 'buy'
-			? networkFeeList.find((item) => item.network === selectedNetwork)?.fee || 0
-			: 0
-	);
 	let isLoadingSB = $state(false);
 	let errorMessage = $state('');
 	let disabledSB = $state(false);
@@ -73,14 +61,11 @@
 		)
 	);
 
-	const selectNetwork = (network: string) => {
-		selectedNetwork = network;
-		const selectedWallet = $userWalletsStore.find((w) => w.network === network);
-		if (selectedWallet) {
-			walletAddress = selectedWallet.address;
-			networkFee = networkFeeList.find((item) => item.network === selectedNetwork)?.fee || 0;
-		}
-	};
+	const selectedWallet = $derived($userWalletsStore.find((w) => w.network === network));
+	$effect(() => {
+		networkFee = networkFeeList.find((item) => item.network === network)?.fee || 0;
+		walletAddress = selectedWallet?.address || '';
+	});
 
 	const confirmTrade = () => {
 		if (isLoadingSB) return;
@@ -119,7 +104,7 @@
 				totalPrice,
 				fee,
 				networkFee: networkFee || 0,
-				network: selectedNetwork,
+				network,
 				walletAddress,
 				finalPrice,
 				status: 'requested' as TransactionStatus, // 초기 상태는 'requested'
@@ -199,35 +184,48 @@
 			disabledSB = false;
 		}
 	});
-
-	// console.log('admins', $admins);
 </script>
 
 <div class="trade-request" transition:scale={{ duration: 300, easing: cubicOut }}>
-	{#if requestOrderType === 'buy'}
-		<div class="input-container">
-			<span>지갑주소</span>
-			<input placeholder="지갑주소를 입력하세요" bind:value={walletAddress} class="input-wallet" />
-			<div class="wallet-list">
-				{#each $userWalletsStore as wallet}
-					{#if wallet.network && wallet.address !== ''}
-						<div class="wallet-item">
-							<label for={wallet.network} class:selected={selectedNetwork === wallet.network}>
-								{wallet.network}
-							</label>
-							<input
-								type="radio"
-								id={wallet.network}
-								value={wallet.address}
-								checked={selectedNetwork === wallet.network}
-								onchange={() => selectNetwork(wallet.network)}
-							/>
-						</div>
-					{/if}
-				{/each}
+	<button class="button-config" onclick={() => drawer.showDrawer('MyInfo')}>
+		<span class="material-symbols-outlined">person_edit</span>
+		My Info setting
+	</button>
+	{#if !$user?.displayName || !$user?.phone || !$userWalletsStore.length || !$userWalletsStore.some((w) => w.address)}
+		<div class="overlay">
+			<div>
+				거래를 위해서 My Info에서<br />회원정보를 입력해주세요.
 			</div>
 		</div>
 	{/if}
+	<div class="input-container">
+		<span>지갑주소</span>
+		<input
+			placeholder="네트워크를 선택하세요"
+			bind:value={walletAddress}
+			class="input-wallet"
+			readonly
+		/>
+		<div class="wallet-list">
+			{#each $userWalletsStore as wallet}
+				{#if wallet.network && wallet.address !== ''}
+					<div class="wallet-item">
+						<label for={wallet.network} class:selected={network === wallet.network}>
+							{wallet.network}
+						</label>
+						<input
+							type="radio"
+							id={wallet.network}
+							value={wallet.address}
+							checked={network === wallet.network}
+							onchange={() => (network = wallet.network)}
+						/>
+					</div>
+				{/if}
+			{/each}
+		</div>
+	</div>
+
 	<div class="flex flex-wrap items-center justify-center gap-5">
 		<div
 			class="flex grow flex-wrap items-center justify-around"
@@ -242,7 +240,7 @@
 			<div class="flex flex-col items-center justify-center">
 				<small
 					>{listingTitle}수량
-					<span style="color: lime;">(최소: {minAmount})</span>
+					<span style="color: lime;">(최소: {minAmount.toLocaleString('ko-KR')})</span>
 				</small>
 				<input
 					value={reqAmount.toLocaleString('ko-KR')}
@@ -275,12 +273,7 @@
 					</div>
 				{:else}
 					<small>예상 {calcTitle}액</small>
-					<div
-						style="font-size: 1.25rem; font-weight: 700; text-align: center; color: {requestOrderType ===
-						'sell'
-							? 'pink'
-							: 'aqua'};"
-					>
+					<div style="font-size: 1.25rem; font-weight: 700; text-align: center; color: aqua;">
 						{finalPrice ? finalPrice.toLocaleString('ko-KR') : '0'}
 					</div>
 				{/if}
@@ -305,6 +298,43 @@
 		transition: height 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
 		padding: 10px;
 		width: 100%;
+		position: relative;
+		z-index: 100;
+		overflow: visible;
+	}
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+		z-index: 99;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.overlay div {
+		background-color: rgba(0, 0, 0, 0.5);
+		padding: 15px;
+		border-radius: 10px;
+	}
+	.button-config {
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 0.8rem;
+		background-color: rgba(0, 0, 0, 0.5);
+		padding: 2px 5px;
+		border-radius: 0 5px 0 10px;
+		z-index: 100;
+	}
+	.button-config span {
+		font-size: 1rem;
 	}
 	.input-container {
 		display: flex;
@@ -355,6 +385,7 @@
 		justify-content: flex-end;
 		gap: 5px;
 		flex-wrap: wrap;
+		min-height: 30px;
 	}
 	.wallet-item {
 		display: flex;

@@ -2,7 +2,7 @@
 	import LogTable from '$lib/components/LogTable.svelte';
 	import type { TradeLog } from '$lib/types/trade';
 	import type { TransactionStatus } from '$lib/auth';
-	import { toast } from '$lib/toast';
+	import { toast } from '$lib/components/toast';
 	import { sendMessage } from '$lib/message';
 	import { sendPush } from '$lib/push';
 	import { TradeService } from '$lib/services/tradeService';
@@ -17,6 +17,7 @@
 	let txidInputs = $state<Record<string, string>>({});
 	let unsubscribe: (() => void) | null = null;
 	let loadingStates = $state(new Map());
+	// let tooltipText = $state(new Map<string, string>());
 
 	// 실시간 거래 요청 감시
 	const watchTradeRequests = () => {
@@ -26,6 +27,7 @@
 				requestData = [...requests];
 				totalReqItems = requests.length;
 				loadingStates = new Map(loadingStates);
+				// tooltipText = new Map<string, string>();
 			});
 		}
 	};
@@ -199,6 +201,8 @@
 
 <LogTable
 	{loadingStates}
+	tooltipText={(item) =>
+		item.status === 'confirmed' ? '거래완료 버튼을 누르면 거래가 완료됩니다.' : ''}
 	collectionName="tradeLogs"
 	queryOptions={{
 		orderByField: 'createdAt',
@@ -245,11 +249,6 @@
 			type: 'text',
 			format: (value) =>
 				'<span class="font-bold text-lg">₩ ' + value.toLocaleString('ko-KR') + '</span>'
-		},
-		{
-			key: 'walletAddress',
-			type: 'text',
-			format: (value) => value
 		},
 		{
 			key: 'txid',
