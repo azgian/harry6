@@ -98,6 +98,9 @@
 				<label for="passwordConfirm">비밀번호 확인</label>
 				<input type="password" id="passwordConfirm" bind:value={passwordConfirm} required />
 			</div>
+			<div class="text-center text-green-300">
+				유저의 회원가입은 P2P거래에 있어<br />합법적 자금임에 동의함을 의미합니다.
+			</div>
 		{/if}
 		<div class="flex justify-end">
 			<Button
