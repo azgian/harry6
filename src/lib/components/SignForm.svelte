@@ -99,7 +99,7 @@
 				<input type="password" id="passwordConfirm" bind:value={passwordConfirm} required />
 			</div>
 			<div class="text-center text-green-300">
-				유저의 회원가입은 P2P거래에 있어<br />합법적 자금임에 동의함을 의미합니다.
+				유저의 회원가입은 P2P거래에 있어<br />합법적 자금이어야 하는 것에<br />동의함을 의미합니다.
 			</div>
 		{/if}
 		<div class="flex justify-end">
