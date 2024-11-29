@@ -17,9 +17,9 @@
 		circles: Circles
 	} as const;
 
-	const selectedLoader = $derived(loaderComponents[type as keyof typeof loaderComponents] || Dots);
+	let Component = $derived(loaderComponents[type as keyof typeof loaderComponents] || Dots);
 </script>
 
-{#if selectedLoader}
-	<svelte:component this={selectedLoader} {size} {color} />
+{#if Component}
+	<Component {size} {color} />
 {/if}

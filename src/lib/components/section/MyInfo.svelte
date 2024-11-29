@@ -32,7 +32,7 @@
 	const setUserData = async () => {
 		try {
 			if (!$user?.uid) {
-				toast.showToast('로그인이 필요합니다.', 'error', 3000, false);
+				toast.show('로그인이 필요합니다.', 'error', 3000);
 				return;
 			}
 
@@ -60,13 +60,13 @@
 				}
 			}
 
-			toast.showToast('회원정보가 등록되었습니다.', 'success', 3000, false);
+			toast.show('회원정보가 등록되었습니다.', 'success', 3000);
 		} catch (error) {
 			console.error('Update error:', error);
 			if (error instanceof Error) {
-				toast.showToast(`업데이트 실패: ${error.message}`, 'error', 3000, false);
+				toast.show(`업데이트 실패: ${error.message}`, 'error', 3000);
 			} else {
-				toast.showToast('업데이트 중 오류가 발생했습니다.', 'error', 3000, false);
+				toast.show('업데이트 중 오류가 발생했습니다.', 'error', 3000);
 			}
 		}
 	};

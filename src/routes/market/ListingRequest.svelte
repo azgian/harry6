@@ -76,13 +76,13 @@
 		if (!alertEmptyValue(inputValuesRequired)) return;
 		const toastMessage =
 			'이 서비스는<br />위법적 목적으로<br />제공되지 않습니다.<br /><br />거래를 신청하시겠습니까?';
-		toast.showToast(toastMessage, 'primary', null, true, requestTrade);
+		toast.show(toastMessage, 'primary', null, requestTrade);
 	};
 
 	const requestTrade = async () => {
 		if (isLoadingSB) return;
 		if (!$user?.uid) {
-			toast.showToast('로그인이 필요합니다.', 'error', 1500, false);
+			toast.show('로그인이 필요합니다.', 'error', 1500);
 			return;
 		}
 
@@ -156,11 +156,11 @@
 			// 4. 모든 작업을 한번에 실행
 			await batch.commit();
 
-			toast.showToast('거래가 신청되었습니다.', 'success', 1500, false);
+			toast.show('거래가 신청되었습니다.', 'success', 1500);
 			goto(`/office`);
 		} catch (error) {
 			console.error('Trade request error:', error);
-			toast.showToast('거래 신청 중 예기치 않은 오류가 발생했습니다.', 'error', 1500, false);
+			toast.show('거래 신청 중 예기치 않은 오류가 발생했습니다.', 'error', 1500);
 		} finally {
 			isLoadingSB = false;
 		}

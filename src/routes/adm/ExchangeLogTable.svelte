@@ -101,7 +101,7 @@
 						await sendNotification(result.userId, '충전완료', message);
 					}
 
-					toast.showToast('충전되었습니다.', 'success', 1500, false);
+					toast.show('충전되었습니다.', 'success', 1500);
 					return;
 				} catch (error) {
 					lastError = error instanceof Error ? error : new Error('알 수 없는 오류');
@@ -119,11 +119,10 @@
 			throw lastError || new Error('트랜잭션 실패');
 		} catch (error) {
 			console.error('캐시 교환 승인 실패:', error);
-			toast.showToast(
+			toast.show(
 				error instanceof Error ? error.message : '캐시 교환 승인에 실패했습니다.',
 				'error',
-				1500,
-				false
+				1500
 			);
 		}
 	};
@@ -153,12 +152,12 @@
 				});
 			});
 
-			toast.showToast('신청이 취소되었습니다.', 'success', 1500, false);
+			toast.show('신청이 취소되었습니다.', 'success', 1500);
 			const message = `충전신청이 취소되었습니다. [₩ ${amount.toLocaleString('ko-KR')}]`;
 			await sendNotification(userId, '충전취소', message);
 		} catch (error) {
 			console.error('캐시 교환 신청 취소 실패:', error);
-			toast.showToast('신청 취소에 실패했습니다.', 'error', 1500, false);
+			toast.show('신청 취소에 실패했습니다.', 'error', 1500);
 		}
 	};
 </script>

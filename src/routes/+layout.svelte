@@ -105,12 +105,14 @@
 
 <Toast
 	message={$toast.message}
-	showToast={$toast.show}
 	type={$toast.type}
-	showButtons={$toast.showButtons}
-	onConfirm={toast.handleConfirm}
-	onCancel={toast.handleCancel}
+	duration={$toast.duration}
+	onConfirm={$toast.onConfirm}
 />
+
+<!-- onConfirm={toast.handleConfirm} -->
+
+<!-- onCancel={toast.handleCancel} -->
 
 <style>
 	.layout {

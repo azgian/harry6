@@ -18,7 +18,7 @@ const createToastStore = () => {
         show: false,
         type: 'info',
         duration: null,
-        showButtons: true,
+        showButtons: false,
         onConfirm: null,
         onCancel: null
     });
@@ -32,11 +32,10 @@ const createToastStore = () => {
         }
     };
 
-    const showToast = (
+    const show = (
         message: string, 
         type: ToastType = 'info', 
         duration: number | null = null, 
-        showButtons: boolean = true, 
         onConfirm: (() => void) | null = null, 
         onCancel: (() => void) | null = null
     ) => {
@@ -47,7 +46,7 @@ const createToastStore = () => {
             show: true,
             type,
             duration,
-            showButtons,
+            showButtons: duration ? false : true,
             onConfirm,
             onCancel
         });
@@ -59,7 +58,7 @@ const createToastStore = () => {
         }
     };
 
-    const hideToast = () => {
+    const hide = () => {
         clearToastTimeout();
         store.update(state => ({ ...state, show: false }));
     };
@@ -86,8 +85,8 @@ const createToastStore = () => {
 
     return {
         subscribe: store.subscribe,
-        showToast,
-        hideToast,
+        show,
+        hide,
         handleConfirm,
         handleCancel
     };

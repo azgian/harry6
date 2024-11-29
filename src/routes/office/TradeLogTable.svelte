@@ -62,7 +62,7 @@
 			const txid = txidInputs[logId] || '';
 
 			if (record.orderType === 'sell' && status === 'confirmed' && !txid) {
-				toast.showToast('TXID를 입력하세요.', 'warning', 1500, false);
+				toast.show('TXID를 입력하세요.', 'warning', 1500);
 				return;
 			}
 
@@ -122,7 +122,7 @@
 			}
 		} catch (error) {
 			console.error('Failed to access request:', error);
-			toast.showToast('거래 상태 업데이트 실패', 'error', 1500, false);
+			toast.show('거래 상태 업데이트 실패', 'error', 1500);
 		}
 	};
 
@@ -182,10 +182,10 @@
 			const typeKr = record.orderType === 'buy' ? '구매' : '판매';
 			await sendNotification(record.userId, '거래취소 알림', `${typeKr} 거래가 취소되었습니다.`);
 
-			toast.showToast('거래가 취소되었습니다.', 'success', 1500, false);
+			toast.show('거래가 취소되었습니다.', 'success', 1500);
 		} catch (error) {
 			console.error('Failed to cancel request:', error);
-			toast.showToast('거래 취소 실패', 'error', 1500, false);
+			toast.show('거래 취소 실패', 'error', 1500);
 		}
 	};
 
@@ -300,11 +300,10 @@
 			type: 'blink',
 			condition: (item: TradeLog) => item.status === 'confirmed',
 			onClick: async (item: TradeLog) => {
-				toast.showToast(
+				toast.show(
 					'거래를 완료하시겠습니까?',
 					'primary',
 					null,
-					true,
 					async () => await accessRequest(item.id, 'completed')
 				);
 			}

@@ -4,12 +4,13 @@
 
 	const tabItems = [
 		{
-			label: 'Dashboard',
+			label: 'Main',
 			href: '/adm',
 			messageStoreType: ['tradeNew', 'depositNew'] as CounterType[]
 		},
 		{ label: 'Users', href: '/adm/users' },
-		{ label: 'Listing', href: '/adm/listing' }
+		{ label: 'Listing', href: '/adm/listing' },
+		{ label: 'Config', href: '/adm/config' }
 	];
 </script>
 

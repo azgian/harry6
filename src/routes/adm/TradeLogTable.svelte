@@ -78,7 +78,7 @@
 			const tradeDoc = await getDoc(tradeRef);
 
 			if (!tradeDoc.exists()) {
-				toast.showToast('거래 정보를 찾을 수 없습니다.', 'error', 1500, false);
+				toast.show('거래 정보를 찾을 수 없습니다.', 'error', 1500);
 				return;
 			}
 
@@ -103,7 +103,7 @@
 
 				case 'confirmed':
 					if (tradeData.orderType === 'buy' && !txidInputs[id]) {
-						toast.showToast('TXID를 입력하세요.', 'error', 1500, false);
+						toast.show('TXID를 입력하세요.', 'error', 1500);
 						handleActionEnd(`거래진행-${id}`);
 						return;
 					}
@@ -136,12 +136,12 @@
 					break;
 
 				default:
-					toast.showToast('잘못된 상태 변경입니다.', 'error', 1500, false);
+					toast.show('잘못된 상태 변경입니다.', 'error', 1500);
 					return;
 			}
 		} catch (error) {
 			console.error('거래 상태 업데이트 실패:', error);
-			toast.showToast('거래 상태 업데이트에 실패했습니다.', 'error', 1500, false);
+			toast.show('거래 상태 업데이트에 실패했습니다.', 'error', 1500);
 		}
 	};
 
@@ -213,19 +213,17 @@
 				'trade'
 			);
 
-			toast.showToast(
+			toast.show(
 				'거래가 취소되었습니다.<br />구매자의 홀딩 자산이 복구되었습니다.',
 				'success',
-				1500,
-				false
+				1500
 			);
 		} catch (error) {
 			console.error('거래 취소 실패:', error);
-			toast.showToast(
+			toast.show(
 				error instanceof Error ? error.message : '거래 취소에 실패했습니다.',
 				'error',
-				1500,
-				false
+				1500
 			);
 		}
 	};

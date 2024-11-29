@@ -14,10 +14,10 @@
 		try {
 			await signOut(auth);
 			goto('/');
-			toast.showToast('로그아웃 되었습니다.', 'success', 1500, false);
+			toast.show('로그아웃 되었습니다.', 'success', 1500);
 		} catch (error) {
 			console.error('로그아웃 에러:', error);
-			toast.showToast('로그아웃 중 오류가 발생했습니다.', 'error', 1500, false);
+			toast.show('로그아웃 중 오류가 발생했습니다.', 'error', 1500);
 		}
 	};
 </script>
@@ -39,9 +39,7 @@
 		<div class="logout-button">
 			<Button
 				onClick={() => {
-					toast.showToast('로그아웃 하시겠습니까?', 'info', null, true, logout, () =>
-						toast.hideToast()
-					);
+					toast.show('로그아웃 하시겠습니까?', 'info', null, logout);
 				}}
 				icon="logout"
 			/>

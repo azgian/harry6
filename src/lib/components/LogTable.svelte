@@ -119,7 +119,7 @@
 		onActionEnd,
 		onItemClick,
 		useItemClick = false,
-		tooltipText = () => ''
+		tooltipText
 	}: Props = $props();
 
 	let logs = $state<Record<string, any>[]>([]);
@@ -165,11 +165,10 @@
 			onActionStart?.(buttonKey);
 
 			if (action.confirmMessage) {
-				toast.showToast(
+				toast.show(
 					action.confirmMessage,
 					toastType,
 					null,
-					true,
 					async () => {
 						try {
 							await action.onClick(item);
@@ -183,7 +182,7 @@
 						}
 					},
 					() => {
-						toast.hideToast();
+						toast.hide();
 						onActionEnd?.(buttonKey);
 					}
 				);
@@ -345,7 +344,7 @@
 		} catch (error: any) {
 			if (error.name !== 'AbortError') {
 				console.error('데이터 로드 실패:', error);
-				toast.showToast('데이터를 불러오는데 실패했습니다.', 'error', 1500, false);
+				toast.show('데이터를 불러오는데 실패했습니다.', 'error', 1500);
 			}
 		}
 	}
@@ -524,13 +523,12 @@
 											onclick={() => {
 												if (log[trade.key]) {
 													if (log.userId === $user?.uid) {
-														toast.showToast(`자신의 지갑주소입니다.`, 'info', 1500, false);
+														toast.show(`자신의 지갑주소입니다.`, 'info', 1500);
 													} else {
-														toast.showToast(
+														toast.show(
 															'지갑주소가 복사되었습니다.<br />' + log[trade.key],
 															'primary',
-															1500,
-															false
+															1500
 														);
 													}
 													navigator.clipboard.writeText(log[trade.key]);

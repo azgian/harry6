@@ -60,7 +60,7 @@ import type { InputValues } from '$lib/types';
 export const alertEmptyValue = (values: InputValues[]): boolean => {
 	for (let i = 0; i < values.length; i++) {
 		if (!values[i].value) {
-			toast.showToast(`${values[i].name}을 채워주세요.`, 'error', 1500, false, null, null);
+			toast.show(`${values[i].name}을 채워주세요.`, 'error', 1500);
 			return false;
 		}
 	}

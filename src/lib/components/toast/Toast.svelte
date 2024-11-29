@@ -3,17 +3,10 @@
 	import { quintOut } from 'svelte/easing';
 	import { toast } from './';
 
-	let {
-		message = '',
-		showToast = false,
-		type = 'info',
-		showButtons = true,
-		onConfirm = null,
-		onCancel = null
-	} = $props();
+	let { message = '', type = 'info', duration = null, onConfirm = null } = $props();
 </script>
 
-{#if showToast}
+{#if $toast.show}
 	<div
 		class="toast-container"
 		in:fly={{ y: 50, duration: 300, easing: quintOut }}
@@ -27,19 +20,21 @@
 			class:primary={type === 'primary'}
 		>
 			<p>{@html message}</p>
-			{#if showButtons}
+			{#if !duration}
 				<div class="buttons">
-					{#if onCancel}
-						<button class="cancel" onclick={toast.handleCancel}>취소</button>
-					{/if}
-					{#if onConfirm}
-						<button class="accept" onclick={toast.handleConfirm}>확인</button>
-					{/if}
+					<button class="cancel" onclick={toast.handleCancel}>취소</button>
+					<button
+						class="accept"
+						onclick={() => {
+							if (onConfirm) onConfirm();
+							toast.hide();
+						}}>확인</button
+					>
 				</div>
 			{/if}
 		</div>
 	</div>
-	{#if showButtons}
+	{#if !duration}
 		<div class="overlay"></div>
 	{/if}
 {/if}

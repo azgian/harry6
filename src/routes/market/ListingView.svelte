@@ -37,7 +37,7 @@
 
 	const deleteListing = async () => {
 		if (!$user?.uid || !lid) {
-			toast.showToast('삭제 권한이 없습니다.', 'error', 1500, false);
+			toast.show('삭제 권한이 없습니다.', 'error', 1500);
 			return;
 		}
 
@@ -46,14 +46,14 @@
 			const listingRef = doc(db, 'listings', lid);
 			await deleteDoc(listingRef);
 
-			toast.showToast('리스팅이 삭제되었습니다.', 'success', 1500, false);
+			toast.show('리스팅이 삭제되었습니다.', 'success', 1500);
 			goto(`/market?orderType=${orderType}`);
 		} catch (error) {
 			console.error('Error deleting listing:', error);
 			if (error instanceof Error) {
-				toast.showToast(`리스팅 삭제 실패: ${error.message}`, 'error', 1500, false);
+				toast.show(`리스팅 삭제 실패: ${error.message}`, 'error', 1500);
 			} else {
-				toast.showToast('리스팅 삭제 중 예기치 않은 오류가 발생했습니다.', 'error', 1500, false);
+				toast.show('리스팅 삭제 중 예기치 않은 오류가 발생했습니다.', 'error', 1500);
 			}
 		}
 	};
@@ -70,7 +70,7 @@
 				{#if $user?.role === 'admin'}
 					<Button
 						onClick={() => {
-							toast.showToast('리스팅을 삭제하시겠습니까?', 'info', null, true, deleteListing);
+							toast.show('리스팅을 삭제하시겠습니까?', 'info', null, deleteListing);
 						}}
 						text="리스팅 삭제"
 						className="outline"

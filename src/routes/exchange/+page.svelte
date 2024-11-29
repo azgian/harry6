@@ -10,7 +10,6 @@
 	import { collection, Timestamp, writeBatch } from 'firebase/firestore';
 	import type { TransactionStatus } from '$lib/auth';
 	import { doc } from 'firebase/firestore';
-	import { sendMessage } from '$lib/message';
 
 	// 기본 상태
 	const initAmount = 0;
@@ -30,15 +29,15 @@
 
 	const confirmExchange = () => {
 		if (!requestAmount) {
-			toast.showToast('충전 금액을 입력해주세요.', 'error', 1500, false);
+			toast.show('충전 금액을 입력해주세요.', 'error', 1500);
 			return;
 		}
-		toast.showToast('카카오페이로 송금하셨습니까?', 'info', null, true, requestExchange);
+		toast.show('지정계좌로 송금하셨습니까?', 'info', null, requestExchange);
 	};
 
 	const requestExchange = async () => {
 		if (!$user?.uid) {
-			toast.showToast('로그인이 필요합니다.', 'error', 1500, false);
+			toast.show('로그인이 필요합니다.', 'error', 1500);
 			return;
 		}
 
@@ -83,12 +82,7 @@
 			// 4. 모든 작업을 한번에 실행
 			await batch.commit();
 
-			toast.showToast(
-				'충전신청이 되었습니다.<br />오피스에서 전체 내역을 확인하세요.',
-				'success',
-				5000,
-				false
-			);
+			toast.show('충전신청이 되었습니다.<br />오피스에서 전체 내역을 확인하세요.', 'success', 5000);
 
 			// 초기화
 			requestAmount = initAmount;
@@ -97,24 +91,12 @@
 			console.error('Exchange request error:', error);
 			const errorMessage =
 				error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-			toast.showToast(`충전신청 실패: ${errorMessage}`, 'error', 3000, false);
+			toast.show(`충전신청 실패: ${errorMessage}`, 'error', 3000);
 		} finally {
 			isLoading = false;
 			disabled = false;
 		}
 	};
-	// $effect(() => {
-	// 	if (requestAmount > 2_000_000) {
-	// 		errorMessage = '1회 최대 충전 금액은 200만원입니다.';
-	// 		disabled = true;
-	// 	} else if (requestAmount < 10000) {
-	// 		errorMessage = `최소 충전 금액은 ${initAmount.toLocaleString('ko-KR')}원입니다.`;
-	// 		disabled = true;
-	// 	} else {
-	// 		errorMessage = '';
-	// 		disabled = false;
-	// 	}
-	// });
 </script>
 
 <div class="exchange-container" transition:slide={{ duration: 300, easing: cubicOut }}>
@@ -261,29 +243,6 @@
 		margin-top: 10px;
 	}
 
-	.kakaopay-link {
-		align-items: center;
-		justify-content: center;
-		background-color: #ffe812;
-		color: #3a1d1d;
-		text-decoration: none;
-		padding: 10px 15px;
-		border-radius: 6px;
-		margin-top: 15px;
-		font-weight: bold;
-		transition: background-color 0.3s;
-	}
-
-	.kakaopay-link:hover {
-		background-color: #ffd800;
-	}
-
-	.kakao-icon {
-		width: 24px;
-		height: 24px;
-		margin-right: 8px;
-	}
-
 	@media (max-width: 510px) {
 		.input-container {
 			flex-direction: column;
@@ -298,12 +257,6 @@
 		.input-container button {
 			width: 100%;
 			border-radius: 10px;
-		}
-
-		.kakaopay-link {
-			display: flex;
-			width: 100%;
-			font-size: 0.8rem;
 		}
 	}
 </style>
