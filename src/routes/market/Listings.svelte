@@ -111,7 +111,7 @@
 	});
 
 	let selectedListing = $derived(
-		lid ? listings.find((listing) => doc(db, 'listings', lid).id === lid) : null
+		lid ? listings.find((listing) => listing.docId === lid) : null
 	);
 
 	const handleListingClick = (listingId: string) => {
